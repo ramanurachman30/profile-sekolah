@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasName;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser, HasName
 {
     use HasFactory, Notifiable;
 
@@ -85,5 +88,26 @@ class User extends Authenticatable
             return in_array($this->role, $roles, true);
         }
         return $this->role === $roles;
+    }
+
+    /**
+     * Filament Panel Authorization Check.
+     */
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->is_active && in_array($this->role, ['superadmin', 'admin_tu', 'guru_humas', 'panitia_ppdb']);
+    }
+
+    /**
+     * Filament Display Name.
+     */
+    public function getFilamentName(): string
+    {
+        return $this->full_name;
+    }
+
+    public function getNameAttribute(): string
+    {
+        return $this->full_name;
     }
 }

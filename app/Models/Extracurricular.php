@@ -47,6 +47,11 @@ class Extracurricular extends Model
         return $this->belongsTo(Teacher::class, 'instructor_teacher_id');
     }
 
+    public function instructorTeacher(): BelongsTo
+    {
+        return $this->belongsTo(Teacher::class, 'instructor_teacher_id');
+    }
+
     public function cover(): BelongsTo
     {
         return $this->belongsTo(MediaAsset::class, 'cover_asset_id');
