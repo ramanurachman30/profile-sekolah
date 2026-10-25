@@ -326,5 +326,5 @@ profile-sekolah/
 
 ## 📄 Lisensi & Hak Cipta
 
-© 2026–2027 **[NAMA SEKOLAH]**. Seluruh hak cipta dilindungi undang-undang.  
-Dikembangkan untuk mendukung kemajuan pendidikan dasar negeri di [Kecamatan], [Kabupaten], [Provinsi].
+© 2026–2027 **RamComps**. Seluruh hak cipta dilindungi undang-undang.  
+Dikembangkan untuk mendukung kemajuan pendidikan dasar negeri di sekitar Kabupaten Bogor.
