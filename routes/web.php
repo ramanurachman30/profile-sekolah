@@ -1,5 +1,15 @@
 <?php
 
+use App\Http\Controllers\Frontend\AcademicController;
+use App\Http\Controllers\Frontend\AchievementController;
+use App\Http\Controllers\Frontend\ContactController;
+use App\Http\Controllers\Frontend\FacilityController;
+use App\Http\Controllers\Frontend\GalleryController;
+use App\Http\Controllers\Frontend\HomeController;
+use App\Http\Controllers\Frontend\NewsController;
+use App\Http\Controllers\Frontend\PpdbController;
+use App\Http\Controllers\Frontend\ProfileController;
+use App\Http\Controllers\Frontend\StudentAffairController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -8,46 +18,37 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', function () {
-    return view('frontend.home');
-})->name('home');
+// Beranda
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/profil', function () {
-    return view('frontend.profile');
-})->name('profile');
+// Profil Sekolah & Dewan Guru
+Route::get('/profil', [ProfileController::class, 'index'])->name('profile');
 
-Route::get('/akademik', function () {
-    return view('frontend.academic');
-})->name('academic');
+// Akademik & Kurikulum Merdeka
+Route::get('/akademik', [AcademicController::class, 'index'])->name('academic');
 
-Route::get('/kesiswaan', function () {
-    return view('frontend.student-affairs');
-})->name('student-affairs');
+// Kesiswaan, 5S & Ekstrakurikuler
+Route::get('/kesiswaan', [StudentAffairController::class, 'index'])->name('student-affairs');
 
-Route::get('/fasilitas', function () {
-    return view('frontend.facilities');
-})->name('facilities');
+// Fasilitas & Sarana Prasarana
+Route::get('/fasilitas', [FacilityController::class, 'index'])->name('facilities');
 
-Route::get('/prestasi', function () {
-    return view('frontend.achievements');
-})->name('achievements');
+// Prestasi & Showcase Siswa
+Route::get('/prestasi', [AchievementController::class, 'index'])->name('achievements');
 
-Route::get('/berita', function () {
-    return view('frontend.news.index');
-})->name('news.index');
+// Warta Berita & Agenda
+Route::get('/berita', [NewsController::class, 'index'])->name('news.index');
+Route::get('/berita/{slug}', [NewsController::class, 'show'])->name('news.show');
 
-Route::get('/berita/{slug}', function ($slug) {
-    return view('frontend.news.show', ['slug' => $slug]);
-})->name('news.show');
+// Dokumentasi Galeri
+Route::get('/galeri', [GalleryController::class, 'index'])->name('gallery');
 
-Route::get('/galeri', function () {
-    return view('frontend.gallery');
-})->name('gallery');
+// PPDB SD Online Terpadu
+Route::get('/ppdb', [PpdbController::class, 'index'])->name('ppdb.index');
+Route::post('/ppdb/daftar', [PpdbController::class, 'store'])->name('ppdb.store');
+Route::get('/ppdb/sukses/{registrationNumber}', [PpdbController::class, 'success'])->name('ppdb.success');
 
-Route::get('/ppdb', function () {
-    return view('frontend.ppdb.index');
-})->name('ppdb.index');
-
-Route::get('/kontak', function () {
-    return view('frontend.contact');
-})->name('contact.index');
+// Kontak, Layanan Pesan & Reservasi Kunjungan
+Route::get('/kontak', [ContactController::class, 'index'])->name('contact.index');
+Route::post('/kontak/pesan', [ContactController::class, 'storeInquiry'])->name('contact.inquiry.store');
+Route::post('/kontak/kunjungan', [ContactController::class, 'storeVisit'])->name('contact.visit.store');
