@@ -30,6 +30,9 @@ Homestead.yaml
 Thumbs.db
 sdn_cikereteg_01_schema.sql
 PLAN_BACKOFFICE_SDN_CIKERETEG_01.md
+PLAN_CMS_LANDING_PAGE_SDN_CIKERETEG_01.md
 template/
 CLAUDE.md
 AGENTS.md
+.agents/
+.claude/

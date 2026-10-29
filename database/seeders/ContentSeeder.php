@@ -4,18 +4,16 @@ namespace Database\Seeders;
 
 use App\Models\AcademicYear;
 use App\Models\Achievement;
-use App\Models\AchievementCategory;
 use App\Models\CharacterHabit;
 use App\Models\ClassRoom;
 use App\Models\Extracurricular;
 use App\Models\Facility;
 use App\Models\FacilityCategory;
-use App\Models\GalleryCategory;
 use App\Models\GalleryItem;
 use App\Models\Grade;
 use App\Models\MediaAsset;
 use App\Models\NewsArticle;
-use App\Models\NewsCategory;
+use App\Models\Student;
 use App\Models\Subject;
 use App\Models\Teacher;
 use App\Models\User;
@@ -71,13 +69,76 @@ class ContentSeeder extends Seeder
                 ClassRoom::firstOrCreate(
                     [
                         'academic_year_id' => $academicYear->id,
-                        'class_name' => $grade->grade_level . 'A',
+                        'class_name' => $grade->grade_level.'A',
                     ],
                     [
                         'grade_id' => $grade->id,
                         'homeroom_teacher_id' => $grade->grade_level === 1 ? ($teacherNur->id ?? null) : ($teacherDewi->id ?? null),
-                        'room_name' => 'Ruang Kelas ' . $grade->grade_level,
+                        'room_name' => 'Ruang Kelas '.$grade->grade_level,
                         'capacity' => 28,
+                    ]
+                );
+            }
+        }
+
+        // 3b. Sample Siswa Aktif per Tingkat Kelas untuk v_active_students
+        $classRooms = ClassRoom::all();
+        if ($classRooms->isNotEmpty()) {
+            Student::whereNull('current_class_id')->update(['current_class_id' => $classRooms->first()->id]);
+        }
+
+        if (Student::whereNotNull('current_class_id')->count() < 15) {
+            $sampleStudents = [
+                // Kelas 1
+                ['Ahmad Fauzan', 'L', '2019-03-15', 'Budi Santoso', '08123456701'],
+                ['Siti Aisyah', 'P', '2019-05-20', 'Rahmat Hidayat', '08123456702'],
+                ['Muhammad Rizky', 'L', '2019-02-10', 'Dedi Mulyadi', '08123456703'],
+                ['Nayla Putri', 'P', '2019-07-04', 'Agus Setiawan', '08123456704'],
+                // Kelas 2
+                ['Alif Pratama', 'L', '2018-04-12', 'Bambang Irawan', '08123456705'],
+                ['Zahra Amelia', 'P', '2018-08-18', 'Heri Susanto', '08123456706'],
+                ['Dimas Setiawan', 'L', '2018-01-25', 'Iwan Fals', '08123456707'],
+                // Kelas 3
+                ['Fathan Al Farisi', 'L', '2017-06-11', 'Joko Widodo', '08123456708'],
+                ['Kirana Larasati', 'P', '2017-09-30', 'Kurniawan', '08123456709'],
+                ['Raffi Ahmad', 'L', '2017-03-22', 'Lukman Hakim', '08123456710'],
+                // Kelas 4
+                ['Danendra Arya', 'L', '2016-11-05', 'Maman Suratman', '08123456711'],
+                ['Anindya Shafa', 'P', '2016-02-14', 'Nanang Kosim', '08123456712'],
+                ['Fikri Haikal', 'L', '2016-07-19', 'Oding Nasrudin', '08123456713'],
+                // Kelas 5
+                ['Bilal Ramadhan', 'L', '2015-10-08', 'Panji Wibowo', '08123456714'],
+                ['Cantika Meilani', 'P', '2015-05-16', 'Qomarudin', '08123456715'],
+                ['Zidan Arkan', 'L', '2015-12-01', 'Rian D Academy', '08123456716'],
+                // Kelas 6
+                ['Rian Pratama', 'L', '2014-08-14', 'Surya Saputra', '08123456717'],
+                ['Aulia Rahmawati', 'P', '2014-04-25', 'Taufik Hidayat', '08123456718'],
+                ['Gilang Ramadhan', 'L', '2014-01-17', 'Ujang Koswara', '08123456719'],
+                ['Salma Nabilla', 'P', '2014-09-09', 'Wahyu Wibisono', '08123456720'],
+            ];
+
+            foreach ($sampleStudents as $idx => $s) {
+                $classIdx = min((int) floor($idx / 3.4), $classRooms->count() - 1);
+                $class = $classRooms[$classIdx] ?? $classRooms->first();
+                $nisn = '00'.str_pad((string) (12345678 + $idx), 8, '0', STR_PAD_LEFT);
+                $nis = '2026'.str_pad((string) (101 + $idx), 4, '0', STR_PAD_LEFT);
+
+                Student::firstOrCreate(
+                    ['nisn' => $nisn],
+                    [
+                        'nis' => $nis,
+                        'nik' => '320101'.str_pad((string) (100000 + $idx), 10, '0', STR_PAD_LEFT),
+                        'full_name' => $s[0],
+                        'nickname' => explode(' ', $s[0])[0],
+                        'gender' => $s[1],
+                        'birth_place' => 'Bogor',
+                        'birth_date' => $s[2],
+                        'parent_guardian_name' => $s[3],
+                        'parent_phone' => $s[4],
+                        'address' => 'Kp. Cikereteg RT 02 / RW 04, Caringin, Kab. Bogor',
+                        'rt_rw' => 'RT 02 / RW 04',
+                        'current_class_id' => $class?->id,
+                        'status' => 'aktif',
                     ]
                 );
             }
@@ -120,7 +181,7 @@ class ContentSeeder extends Seeder
         ];
 
         foreach ($habits as $h) {
-            $media = $getMedia(Str::slug($h['title']) . '.jpg', $h['image'], $h['title']);
+            $media = $getMedia(Str::slug($h['title']).'.jpg', $h['image'], $h['title']);
             CharacterHabit::firstOrCreate(
                 ['title' => $h['title']],
                 [
@@ -227,7 +288,7 @@ class ContentSeeder extends Seeder
         ];
 
         foreach ($ekskuls as $e) {
-            $media = $getMedia(Str::slug($e['name']) . '.jpg', $e['image'], $e['name']);
+            $media = $getMedia(Str::slug($e['name']).'.jpg', $e['image'], $e['name']);
             Extracurricular::firstOrCreate(
                 ['slug' => $e['slug']],
                 [
@@ -339,7 +400,7 @@ class ContentSeeder extends Seeder
         ];
 
         foreach ($facilities as $f) {
-            $media = $getMedia(Str::slug($f['name']) . '.jpg', $f['image'], $f['name']);
+            $media = $getMedia(Str::slug($f['name']).'.jpg', $f['image'], $f['name']);
             Facility::firstOrCreate(
                 ['facility_code' => $f['facility_code']],
                 [
@@ -434,7 +495,7 @@ class ContentSeeder extends Seeder
         ];
 
         foreach ($achievements as $ach) {
-            $media = $getMedia(Str::slug($ach['achievement_title']) . '.jpg', $ach['image'], $ach['achievement_title']);
+            $media = $getMedia(Str::slug($ach['achievement_title']).'.jpg', $ach['image'], $ach['achievement_title']);
             Achievement::firstOrCreate(
                 ['achievement_title' => $ach['achievement_title']],
                 [
@@ -479,7 +540,7 @@ class ContentSeeder extends Seeder
                 'title' => 'Pemeriksaan Gigi & Imunisasi Berkala oleh Puskesmas Caringin',
                 'slug' => 'pemeriksaan-gigi-dan-imunisasi-puskesmas',
                 'summary' => 'Puskesmas Caringin bekerjasama dengan UKS sekolah mengadakan penyuluhan cara menyikat gigi yang benar serta imunisasi rutin bagi siswa kelas 1 dan 2.',
-                'content' => "<p>Menjaga kesehatan fisik siswa sejak usia dini merupakan prioritas penting di SDN Cikereteg 01. Bersama tim medis dari Puskesmas Caringin, sekolah menyelenggarakan program pemeriksaan gigi berkala dan Bulan Imunisasi Anak Sekolah (BIAS).</p><p>Siswa kelas 1 dan 2 diajarkan teknik menggosok gigi yang baik menggunakan model gigi peraga. Berkat pendekatan ramah dan ceria dari para dokter dan pembina UKS, Ibu Nurhasanah, S.Pd.SD., anak-anak mengikuti seluruh rangkaian tanpa rasa takut.</p>",
+                'content' => '<p>Menjaga kesehatan fisik siswa sejak usia dini merupakan prioritas penting di SDN Cikereteg 01. Bersama tim medis dari Puskesmas Caringin, sekolah menyelenggarakan program pemeriksaan gigi berkala dan Bulan Imunisasi Anak Sekolah (BIAS).</p><p>Siswa kelas 1 dan 2 diajarkan teknik menggosok gigi yang baik menggunakan model gigi peraga. Berkat pendekatan ramah dan ceria dari para dokter dan pembina UKS, Ibu Nurhasanah, S.Pd.SD., anak-anak mengikuti seluruh rangkaian tanpa rasa takut.</p>',
                 'image' => 'https://images.unsplash.com/photo-1544717305-2782549b5136?q=80&w=700&auto=format&fit=crop',
                 'published_at' => '2026-09-22 10:15:00',
             ],
@@ -488,7 +549,7 @@ class ContentSeeder extends Seeder
                 'title' => 'Simulasi ANBK Kelas 5: Siswa Terbiasa Menggunakan Chromebook',
                 'slug' => 'simulasi-anbk-kelas-5-chromebook',
                 'summary' => 'Pelaksanaan simulasi Asesmen Nasional Berbasis Komputer berjalan tertib dan lancar di bawah bimbingan proktor dan teknisi sekolah.',
-                'content' => "<p>Sebagai persiapan menjelang Asesmen Nasional Berbasis Komputer (ANBK), para siswa kelas 5 SDN Cikereteg 01 mengikuti gladi resik dan simulasi ujian daring di ruang TIK sekolah.</p><p>Dengan ketersediaan unit Chromebook bantuan Kemendikbudristek dan koneksi internet stabil, peserta didik tampak terbiasa mengoperasikan mouse dan keyboard untuk menjawab instrumen literasi membaca dan numerasi bernalar.</p>",
+                'content' => '<p>Sebagai persiapan menjelang Asesmen Nasional Berbasis Komputer (ANBK), para siswa kelas 5 SDN Cikereteg 01 mengikuti gladi resik dan simulasi ujian daring di ruang TIK sekolah.</p><p>Dengan ketersediaan unit Chromebook bantuan Kemendikbudristek dan koneksi internet stabil, peserta didik tampak terbiasa mengoperasikan mouse dan keyboard untuk menjawab instrumen literasi membaca dan numerasi bernalar.</p>',
                 'image' => 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=700&auto=format&fit=crop',
                 'published_at' => '2026-09-10 11:00:00',
             ],
@@ -497,7 +558,7 @@ class ContentSeeder extends Seeder
                 'title' => 'Semarak Hari Pramuka: Perkemahan Satu Hari Pangkalan Cikereteg 01',
                 'slug' => 'semarak-hari-pramuka-perkemahan-satu-hari',
                 'summary' => 'Ratusan anggota pramuka Siaga dan Penggalang merayakan hari jadi Pramuka dengan aneka perlombaan ketangkasan dan api unggun gembira.',
-                'content' => "<p>Pangkalan Pramuka SDN Cikereteg 01 menyelenggarakan Perkemahan Satu Hari (Persari) dalam rangka menyambut Hari Pramuka. Kegiatan ini diikuti oleh seluruh siswa anggota Siaga dan Penggalang dengan penuh semangat patriotisme.</p><p>Aneka pos ketangkasan digelar di lapangan sekolah, mulai dari semaphore sandi gembira, tali temali pioneering tiang bendera, hingga lomba cerdas cermat Dwi Darma dan Dasa Darma.</p>",
+                'content' => '<p>Pangkalan Pramuka SDN Cikereteg 01 menyelenggarakan Perkemahan Satu Hari (Persari) dalam rangka menyambut Hari Pramuka. Kegiatan ini diikuti oleh seluruh siswa anggota Siaga dan Penggalang dengan penuh semangat patriotisme.</p><p>Aneka pos ketangkasan digelar di lapangan sekolah, mulai dari semaphore sandi gembira, tali temali pioneering tiang bendera, hingga lomba cerdas cermat Dwi Darma dan Dasa Darma.</p>',
                 'image' => 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?q=80&w=700&auto=format&fit=crop',
                 'published_at' => '2026-08-14 14:00:00',
             ],
@@ -506,14 +567,14 @@ class ContentSeeder extends Seeder
                 'title' => 'Sosialisasi PPDB Online SDN Cikereteg 01: Bebas Pungutan & Ramah Anak',
                 'slug' => 'sosialisasi-ppdb-online-bebas-pungutan',
                 'summary' => 'Pihak sekolah mengumumkan pembukaan gelombang pendaftaran peserta didik baru kelas 1 tanpa tes calistung dan bebas biaya.',
-                'content' => "<p>SDN Cikereteg 01 mengumumkan kesiapan pelaksanaan Penerimaan Peserta Didik Baru (PPDB) untuk jenjang kelas 1 Sekolah Dasar. Pendaftaran dibuka melalui kanal formulir mandiri online maupun pelayanan langsung di sekretariat sekolah.</p><p>Kepala sekolah menegaskan bahwa sesuai regulasi pemerintah, penerimaan siswa baru jenjang SD tidak memberlakukan tes baca, tulis, dan hitung (calistung). Seluruh biaya operasional sekolah 100% didanai oleh Bantuan Operasional Sekolah (BOS) sehingga bebas dari segala bentuk pungutan.</p>",
+                'content' => '<p>SDN Cikereteg 01 mengumumkan kesiapan pelaksanaan Penerimaan Peserta Didik Baru (PPDB) untuk jenjang kelas 1 Sekolah Dasar. Pendaftaran dibuka melalui kanal formulir mandiri online maupun pelayanan langsung di sekretariat sekolah.</p><p>Kepala sekolah menegaskan bahwa sesuai regulasi pemerintah, penerimaan siswa baru jenjang SD tidak memberlakukan tes baca, tulis, dan hitung (calistung). Seluruh biaya operasional sekolah 100% didanai oleh Bantuan Operasional Sekolah (BOS) sehingga bebas dari segala bentuk pungutan.</p>',
                 'image' => 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?q=80&w=700&auto=format&fit=crop',
                 'published_at' => '2026-08-01 09:30:00',
             ],
         ];
 
         foreach ($articles as $art) {
-            $media = $getMedia(Str::slug($art['title']) . '.jpg', $art['image'], $art['title']);
+            $media = $getMedia(Str::slug($art['title']).'.jpg', $art['image'], $art['title']);
             NewsArticle::firstOrCreate(
                 ['slug' => $art['slug']],
                 [
@@ -611,7 +672,7 @@ class ContentSeeder extends Seeder
 
         foreach ($galleryItems as $gal) {
             $mediaAssetType = $gal['media_type'] === 'video' ? 'video' : 'image';
-            $media = $getMedia(Str::slug($gal['title']) . '.jpg', $gal['image'], $gal['title'], $mediaAssetType);
+            $media = $getMedia(Str::slug($gal['title']).'.jpg', $gal['image'], $gal['title'], $mediaAssetType);
             GalleryItem::firstOrCreate(
                 ['title' => $gal['title']],
                 [
