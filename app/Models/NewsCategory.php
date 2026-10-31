@@ -11,6 +11,7 @@ class NewsCategory extends Model
     use HasFactory;
 
     protected $table = 'mst_news_categories';
+
     public $timestamps = false;
 
     protected $fillable = [
