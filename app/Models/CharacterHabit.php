@@ -12,6 +12,7 @@ class CharacterHabit extends Model
     use HasFactory;
 
     protected $table = 'mst_character_habits';
+
     public $timestamps = false;
 
     protected $fillable = [

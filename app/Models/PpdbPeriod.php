@@ -13,6 +13,7 @@ class PpdbPeriod extends Model
     use HasFactory;
 
     protected $table = 'trn_ppdb_periods';
+
     public $timestamps = false;
 
     protected $fillable = [

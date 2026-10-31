@@ -47,7 +47,7 @@ class StudentInfolist
                             ->placeholder('-'),
                         TextEntry::make('birth_date')
                             ->label('Tempat, Tanggal Lahir')
-                            ->formatStateUsing(fn ($record) => ($record->birth_place ? $record->birth_place . ', ' : '') . ($record->birth_date ? $record->birth_date->format('d/m/Y') : '-')),
+                            ->formatStateUsing(fn ($record) => ($record->birth_place ? $record->birth_place.', ' : '').($record->birth_date ? $record->birth_date->format('d/m/Y') : '-')),
                     ]),
 
                 Section::make('Rombongan Belajar')

@@ -12,6 +12,7 @@ class AcademicYear extends Model
     use HasFactory;
 
     protected $table = 'mst_academic_years';
+
     public $timestamps = false;
 
     protected $fillable = [

@@ -11,6 +11,7 @@ class FacilityCategory extends Model
     use HasFactory;
 
     protected $table = 'mst_facility_categories';
+
     public $timestamps = false;
 
     protected $fillable = [

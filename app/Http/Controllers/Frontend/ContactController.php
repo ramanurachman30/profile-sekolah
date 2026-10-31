@@ -48,7 +48,7 @@ class ContactController extends Controller
 
         $inquiry = $this->ticketService->createInquiry($validated);
 
-        return redirect()->to(route('contact.index') . '#form-pesan')->with('inquiry_success', [
+        return redirect()->to(route('contact.index').'#form-pesan')->with('inquiry_success', [
             'ticket_number' => $inquiry->ticket_number,
             'sender_name' => $inquiry->sender_name,
             'category_label' => $inquiry->category_label,
@@ -81,7 +81,7 @@ class ContactController extends Controller
 
         $visit = $this->ticketService->createSchoolVisit($validated);
 
-        return redirect()->to(route('contact.index') . '#form-kunjungan')->with('visit_success', [
+        return redirect()->to(route('contact.index').'#form-kunjungan')->with('visit_success', [
             'booking_code' => $visit->booking_code,
             'parent_name' => $visit->parent_name,
             'visit_date' => $visit->visit_date->translatedFormat('l, d F Y'),

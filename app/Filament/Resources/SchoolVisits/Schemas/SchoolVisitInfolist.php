@@ -69,7 +69,7 @@ class SchoolVisitInfolist
                             ->formatStateUsing(fn (string $state): string => match ($state) {
                                 'kelas_1' => 'Calon Peserta Didik Kelas 1',
                                 'umum' => 'Kunjungan Umum',
-                                default => 'Pindahan ' . ucfirst(str_replace('_', ' ', $state)),
+                                default => 'Pindahan '.ucfirst(str_replace('_', ' ', $state)),
                             }),
                     ]),
 

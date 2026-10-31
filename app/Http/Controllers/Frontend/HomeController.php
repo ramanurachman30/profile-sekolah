@@ -17,7 +17,7 @@ class HomeController extends Controller
     public function index(): View
     {
         $profile = SchoolProfile::first();
-        
+
         $featuredAchievements = Achievement::with(['category', 'photo', 'mentorTeacher'])
             ->where('is_featured', 1)
             ->latest('competition_date')

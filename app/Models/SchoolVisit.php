@@ -13,6 +13,7 @@ class SchoolVisit extends Model
     protected $table = 'trn_school_visits';
 
     public const CREATED_AT = 'created_at';
+
     public const UPDATED_AT = null;
 
     protected $fillable = [

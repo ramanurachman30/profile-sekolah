@@ -17,7 +17,7 @@ class InquiryTicketService
         $year = $year ?? Carbon::now()->year;
         $prefix = "PESAN-SD-{$year}-";
 
-        return DB::transaction(function () use ($prefix, $year) {
+        return DB::transaction(function () use ($prefix) {
             $lastTicket = ContactInquiry::where('ticket_number', 'like', "{$prefix}%")
                 ->orderByDesc('id')
                 ->lockForUpdate()
@@ -42,7 +42,7 @@ class InquiryTicketService
         $year = $year ?? Carbon::now()->year;
         $prefix = "KUNJUNGAN-SD-{$year}-";
 
-        return DB::transaction(function () use ($prefix, $year) {
+        return DB::transaction(function () use ($prefix) {
             $lastVisit = SchoolVisit::where('booking_code', 'like', "{$prefix}%")
                 ->orderByDesc('id')
                 ->lockForUpdate()

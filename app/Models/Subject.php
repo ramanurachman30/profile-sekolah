@@ -10,6 +10,7 @@ class Subject extends Model
     use HasFactory;
 
     protected $table = 'mst_subjects';
+
     public $timestamps = false;
 
     protected $fillable = [

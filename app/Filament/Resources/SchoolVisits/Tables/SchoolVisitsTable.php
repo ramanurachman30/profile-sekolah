@@ -162,9 +162,10 @@ class SchoolVisitsTable
                     ->url(function ($record) {
                         $phone = preg_replace('/[^0-9]/', '', $record->parent_phone);
                         if (str_starts_with($phone, '0')) {
-                            $phone = '62' . substr($phone, 1);
+                            $phone = '62'.substr($phone, 1);
                         }
                         $text = urlencode("Halo Bpk/Ibu {$record->parent_name}, kami dari SDN Cikereteg 01 mengonfirmasi reservasi kunjungan sekolah (Kode Booking: {$record->booking_code}) pada tanggal {$record->visit_date->format('d/m/Y')}: ");
+
                         return "https://wa.me/{$phone}?text={$text}";
                     }, shouldOpenInNewTab: true),
             ])

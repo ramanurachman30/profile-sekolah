@@ -70,19 +70,19 @@ class PpdbController extends Controller
         // Upload Berkas via MediaAssetService
         $kkAssetId = null;
         if ($request->hasFile('document_kk')) {
-            $kkAsset = $mediaService->upload($request->file('document_kk'), 'KK - ' . $validated['child_full_name']);
+            $kkAsset = $mediaService->upload($request->file('document_kk'), 'KK - '.$validated['child_full_name']);
             $kkAssetId = $kkAsset->id;
         }
 
         $aktaAssetId = null;
         if ($request->hasFile('document_akta')) {
-            $aktaAsset = $mediaService->upload($request->file('document_akta'), 'Akta - ' . $validated['child_full_name']);
+            $aktaAsset = $mediaService->upload($request->file('document_akta'), 'Akta - '.$validated['child_full_name']);
             $aktaAssetId = $aktaAsset->id;
         }
 
         $kiaAssetId = null;
         if ($request->hasFile('document_kia')) {
-            $kiaAsset = $mediaService->upload($request->file('document_kia'), 'KIA - ' . $validated['child_full_name']);
+            $kiaAsset = $mediaService->upload($request->file('document_kia'), 'KIA - '.$validated['child_full_name']);
             $kiaAssetId = $kiaAsset->id;
         }
 
@@ -113,12 +113,12 @@ class PpdbController extends Controller
         $profile = SchoolProfile::first();
         $cleanPhone = preg_replace('/[^0-9]/', '', $profile->whatsapp ?? '6281234567890');
         $waMessage = rawurlencode(
-            "Halo Panitia PPDB SDN Cikereteg 01, saya ingin konfirmasi pendaftaran calon siswa:\n" .
-            "No. Registrasi: {$regNumber}\n" .
-            "Nama Anak: {$validated['child_full_name']}\n" .
-            "Jalur: " . ucfirst($validated['track']) . "\n" .
-            "Nama Wali: {$validated['parent_name']}\n" .
-            "Terima kasih."
+            "Halo Panitia PPDB SDN Cikereteg 01, saya ingin konfirmasi pendaftaran calon siswa:\n".
+            "No. Registrasi: {$regNumber}\n".
+            "Nama Anak: {$validated['child_full_name']}\n".
+            'Jalur: '.ucfirst($validated['track'])."\n".
+            "Nama Wali: {$validated['parent_name']}\n".
+            'Terima kasih.'
         );
         $waUrl = "https://wa.me/{$cleanPhone}?text={$waMessage}";
 
@@ -148,12 +148,12 @@ class PpdbController extends Controller
         $profile = SchoolProfile::first();
         $cleanPhone = preg_replace('/[^0-9]/', '', $profile->whatsapp ?? '6281234567890');
         $waMessage = rawurlencode(
-            "Halo Panitia PPDB SDN Cikereteg 01, saya ingin konfirmasi pendaftaran calon siswa:\n" .
-            "No. Registrasi: {$registration->registration_number}\n" .
-            "Nama Anak: {$registration->child_full_name}\n" .
-            "Jalur: " . $registration->track_label . "\n" .
-            "Nama Wali: {$registration->parent_name}\n" .
-            "Terima kasih."
+            "Halo Panitia PPDB SDN Cikereteg 01, saya ingin konfirmasi pendaftaran calon siswa:\n".
+            "No. Registrasi: {$registration->registration_number}\n".
+            "Nama Anak: {$registration->child_full_name}\n".
+            'Jalur: '.$registration->track_label."\n".
+            "Nama Wali: {$registration->parent_name}\n".
+            'Terima kasih.'
         );
         $waUrl = "https://wa.me/{$cleanPhone}?text={$waMessage}";
 

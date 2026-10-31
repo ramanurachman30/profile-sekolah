@@ -11,6 +11,7 @@ class CurriculumPhase extends Model
     use HasFactory;
 
     protected $table = 'mst_curriculum_phases';
+
     public $timestamps = false;
 
     protected $fillable = [

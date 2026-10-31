@@ -12,6 +12,7 @@ class Grade extends Model
     use HasFactory;
 
     protected $table = 'mst_grades';
+
     public $timestamps = false;
 
     protected $fillable = [
@@ -42,6 +43,7 @@ class Grade extends Model
         if (empty($this->dismissal_time)) {
             return '';
         }
-        return substr($this->dismissal_time, 0, 5) . ' WIB';
+
+        return substr($this->dismissal_time, 0, 5).' WIB';
     }
 }

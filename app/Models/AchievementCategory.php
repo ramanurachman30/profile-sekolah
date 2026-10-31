@@ -11,6 +11,7 @@ class AchievementCategory extends Model
     use HasFactory;
 
     protected $table = 'mst_achievement_categories';
+
     public $timestamps = false;
 
     protected $fillable = [

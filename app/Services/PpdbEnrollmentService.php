@@ -13,10 +13,6 @@ class PpdbEnrollmentService
      * Terima pendaftar PPDB, buat record siswa resmi di mst_students,
      * dan perbarui status pendaftaran menjadi 'diterima'.
      *
-     * @param PpdbRegistration $registration
-     * @param int|null $verifiedByUserId
-     * @param int|null $classRoomId
-     * @return Student
      * @throws Exception
      */
     public function acceptRegistration(PpdbRegistration $registration, ?int $verifiedByUserId = null, ?int $classRoomId = null): Student
@@ -67,11 +63,6 @@ class PpdbEnrollmentService
 
     /**
      * Tolak pendaftaran PPDB dengan menyertakan alasan.
-     *
-     * @param PpdbRegistration $registration
-     * @param string $reason
-     * @param int|null $verifiedByUserId
-     * @return bool
      */
     public function rejectRegistration(PpdbRegistration $registration, string $reason, ?int $verifiedByUserId = null): bool
     {

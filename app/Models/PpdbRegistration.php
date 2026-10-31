@@ -13,6 +13,7 @@ class PpdbRegistration extends Model
     protected $table = 'trn_ppdb_registrations';
 
     public const CREATED_AT = 'created_at';
+
     public const UPDATED_AT = null;
 
     protected $fillable = [

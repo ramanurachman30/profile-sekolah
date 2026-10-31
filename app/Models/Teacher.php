@@ -14,6 +14,7 @@ class Teacher extends Model
     use HasFactory;
 
     protected $table = 'mst_teachers';
+
     public $timestamps = false;
 
     protected $fillable = [

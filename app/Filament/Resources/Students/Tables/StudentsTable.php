@@ -98,9 +98,10 @@ class StudentsTable
                     ->url(function ($record) {
                         $phone = preg_replace('/[^0-9]/', '', $record->parent_phone);
                         if (str_starts_with($phone, '0')) {
-                            $phone = '62' . substr($phone, 1);
+                            $phone = '62'.substr($phone, 1);
                         }
                         $text = urlencode("Halo Bpk/Ibu wali dari ananda {$record->full_name}, kami dari pihak sekolah SDN Cikereteg 01: ");
+
                         return "https://wa.me/{$phone}?text={$text}";
                     }, shouldOpenInNewTab: true),
             ])

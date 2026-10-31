@@ -164,9 +164,10 @@ class ContactInquiriesTable
                     ->url(function ($record) {
                         $phone = preg_replace('/[^0-9]/', '', $record->sender_phone);
                         if (str_starts_with($phone, '0')) {
-                            $phone = '62' . substr($phone, 1);
+                            $phone = '62'.substr($phone, 1);
                         }
                         $text = urlencode("Halo {$record->sender_name}, kami dari SDN Cikereteg 01 merespon tiket aduan/pesan Anda ({$record->ticket_number}): ");
+
                         return "https://wa.me/{$phone}?text={$text}";
                     }, shouldOpenInNewTab: true),
             ])

@@ -13,6 +13,7 @@ class Achievement extends Model
     use HasFactory;
 
     protected $table = 'trn_achievements';
+
     public $timestamps = false;
 
     protected $fillable = [

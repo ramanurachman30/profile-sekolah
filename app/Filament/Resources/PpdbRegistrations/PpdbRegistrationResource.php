@@ -38,6 +38,7 @@ class PpdbRegistrationResource extends Resource
     {
         /** @var User|null $user */
         $user = Auth::user();
+
         return $user && in_array($user->role, ['superadmin', 'panitia_ppdb', 'admin_tu']);
     }
 
@@ -45,6 +46,7 @@ class PpdbRegistrationResource extends Resource
     {
         /** @var User|null $user */
         $user = Auth::user();
+
         return $user && in_array($user->role, ['superadmin', 'panitia_ppdb']);
     }
 
@@ -52,6 +54,7 @@ class PpdbRegistrationResource extends Resource
     {
         /** @var User|null $user */
         $user = Auth::user();
+
         return $user && in_array($user->role, ['superadmin', 'panitia_ppdb']);
     }
 
@@ -59,6 +62,7 @@ class PpdbRegistrationResource extends Resource
     {
         /** @var User|null $user */
         $user = Auth::user();
+
         return $user && $user->role === 'superadmin';
     }
 

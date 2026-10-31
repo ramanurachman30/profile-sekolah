@@ -37,6 +37,7 @@ class ContactInquiryResource extends Resource
     {
         /** @var User|null $user */
         $user = Auth::user();
+
         return $user && in_array($user->role, ['superadmin', 'admin_tu', 'guru_humas']);
     }
 
@@ -49,6 +50,7 @@ class ContactInquiryResource extends Resource
     {
         /** @var User|null $user */
         $user = Auth::user();
+
         return $user && in_array($user->role, ['superadmin', 'admin_tu', 'guru_humas']);
     }
 
@@ -56,6 +58,7 @@ class ContactInquiryResource extends Resource
     {
         /** @var User|null $user */
         $user = Auth::user();
+
         return $user && $user->role === 'superadmin';
     }
 

@@ -12,6 +12,7 @@ class ClassRoom extends Model
     use HasFactory;
 
     protected $table = 'rel_classes';
+
     public $timestamps = false;
 
     protected $fillable = [

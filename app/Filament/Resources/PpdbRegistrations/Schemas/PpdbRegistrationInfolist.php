@@ -29,7 +29,7 @@ class PpdbRegistrationInfolist
                             ->color(fn (string $state): string => match ($state) {
                                 'zonasi' => 'primary',
                                 'afirmasi' => 'warning',
-                                
+
                                 'perpindahan_ortu' => 'info',
                                 default => 'gray',
                             }),

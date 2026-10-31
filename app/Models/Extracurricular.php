@@ -13,6 +13,7 @@ class Extracurricular extends Model
     use HasFactory;
 
     protected $table = 'mst_extracurriculars';
+
     public $timestamps = false;
 
     protected $fillable = [
@@ -60,6 +61,6 @@ class Extracurricular extends Model
     public function students(): BelongsToMany
     {
         return $this->belongsToMany(Student::class, 'rel_student_extracurriculars', 'extracurricular_id', 'student_id')
-                    ->withPivot('academic_year_id', 'role_note', 'joined_date');
+            ->withPivot('academic_year_id', 'role_note', 'joined_date');
     }
 }

@@ -109,7 +109,7 @@ class PpdbRegistrationsTable
             ])
             ->recordActions([
                 ViewAction::make(),
-                
+
                 // Action: Terima Calon Siswa (Auto-enroll ke mst_students)
                 Action::make('accept')
                     ->label('Terima Siswa')
@@ -170,9 +170,10 @@ class PpdbRegistrationsTable
                     ->url(function ($record) {
                         $clean = preg_replace('/[^0-9]/', '', $record->parent_phone);
                         if (str_starts_with($clean, '0')) {
-                            $clean = '62' . substr($clean, 1);
+                            $clean = '62'.substr($clean, 1);
                         }
                         $msg = rawurlencode("Halo Bapak/Ibu {$record->parent_name}, kami dari Panitia PPDB SDN Cikereteg 01 menginformasikan status pendaftaran putra/putri Anda ({$record->child_full_name} - {$record->registration_number}).");
+
                         return "https://wa.me/{$clean}?text={$msg}";
                     })
                     ->openUrlInNewTab(),

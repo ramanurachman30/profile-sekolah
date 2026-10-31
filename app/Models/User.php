@@ -17,6 +17,7 @@ class User extends Authenticatable implements FilamentUser, HasName
     protected $table = 'sys_users';
 
     public const CREATED_AT = 'created_at';
+
     public const UPDATED_AT = null;
 
     protected $fillable = [
@@ -87,6 +88,7 @@ class User extends Authenticatable implements FilamentUser, HasName
         if (is_array($roles)) {
             return in_array($this->role, $roles, true);
         }
+
         return $this->role === $roles;
     }
 

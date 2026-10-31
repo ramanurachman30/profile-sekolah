@@ -15,6 +15,7 @@ class Student extends Model
     protected $table = 'mst_students';
 
     public const CREATED_AT = 'created_at';
+
     public const UPDATED_AT = null;
 
     protected $fillable = [
@@ -61,7 +62,7 @@ class Student extends Model
     public function extracurriculars(): BelongsToMany
     {
         return $this->belongsToMany(Extracurricular::class, 'rel_student_extracurriculars', 'student_id', 'extracurricular_id')
-                    ->withPivot('academic_year_id', 'role_note', 'joined_date');
+            ->withPivot('academic_year_id', 'role_note', 'joined_date');
     }
 
     public function achievements(): BelongsToMany
