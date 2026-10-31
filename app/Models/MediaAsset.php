@@ -13,6 +13,7 @@ class MediaAsset extends Model
     protected $table = 'sys_media_assets';
 
     public const CREATED_AT = 'created_at';
+
     public const UPDATED_AT = null;
 
     protected $fillable = [

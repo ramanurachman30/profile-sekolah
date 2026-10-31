@@ -11,11 +11,6 @@ class MediaAssetService
 {
     /**
      * Upload dan simpan file ke media assets, dengan konversi otomatis gambar ke .webp.
-     *
-     * @param UploadedFile $file
-     * @param string|null $altText
-     * @param string $disk
-     * @return MediaAsset
      */
     public function upload(UploadedFile $file, ?string $altText = null, string $disk = 'public'): MediaAsset
     {
@@ -32,7 +27,7 @@ class MediaAssetService
         if ($fileType === 'image' && $mimeType !== 'image/gif' && function_exists('imagewebp')) {
             $converted = $this->convertToWebp($file);
             if ($converted !== null) {
-                $fileName = "{$slugName}_" . Str::random(8) . ".webp";
+                $fileName = "{$slugName}_".Str::random(8).'.webp';
                 $filePath = "{$directory}/{$fileName}";
 
                 Storage::disk($disk)->put($filePath, $converted['content']);
@@ -52,7 +47,7 @@ class MediaAssetService
 
         // Simpan langsung jika bukan gambar atau konversi tidak berjalan
         $extension = $file->getClientOriginalExtension() ?: 'bin';
-        $fileName = "{$slugName}_" . Str::random(8) . ".{$extension}";
+        $fileName = "{$slugName}_".Str::random(8).".{$extension}";
         $filePath = Storage::disk($disk)->putFileAs($directory, $file, $fileName);
         $fileSizeKb = (int) ceil($file->getSize() / 1024);
 
@@ -85,7 +80,6 @@ class MediaAssetService
     /**
      * Konversi gambar ke WebP menggunakan GD.
      *
-     * @param UploadedFile $file
      * @return array{content: string}|null
      */
     protected function convertToWebp(UploadedFile $file): ?array
@@ -101,7 +95,7 @@ class MediaAssetService
                 default => null,
             };
 
-            if (!$image) {
+            if (! $image) {
                 return null;
             }
 
@@ -117,7 +111,7 @@ class MediaAssetService
             $content = ob_get_clean();
             imagedestroy($image);
 
-            if (!$content) {
+            if (! $content) {
                 return null;
             }
 
