@@ -14,6 +14,7 @@ class NewsArticle extends Model
     protected $table = 'trn_news_articles';
 
     public const CREATED_AT = 'created_at';
+
     public const UPDATED_AT = null;
 
     protected $fillable = [
@@ -42,8 +43,8 @@ class NewsArticle extends Model
     public function scopePublished(Builder $query): Builder
     {
         return $query->where('status', 'published')
-                     ->where('published_at', '<=', now())
-                     ->orderBy('published_at', 'desc');
+            ->where('published_at', '<=', now())
+            ->orderBy('published_at', 'desc');
     }
 
     public function category(): BelongsTo
