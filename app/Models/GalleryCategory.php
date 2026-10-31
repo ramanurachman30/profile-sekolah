@@ -11,6 +11,7 @@ class GalleryCategory extends Model
     use HasFactory;
 
     protected $table = 'mst_gallery_categories';
+
     public $timestamps = false;
 
     protected $fillable = [

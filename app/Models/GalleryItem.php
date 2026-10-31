@@ -14,6 +14,7 @@ class GalleryItem extends Model
     protected $table = 'trn_gallery_items';
 
     public const CREATED_AT = 'created_at';
+
     public const UPDATED_AT = null;
 
     protected $fillable = [
