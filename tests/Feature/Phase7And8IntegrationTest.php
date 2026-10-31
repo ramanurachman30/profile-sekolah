@@ -109,9 +109,9 @@ class Phase7And8IntegrationTest extends TestCase
         // Staf TU memiliki akses ke tiket aduan dan reservasi kunjungan
         Auth::login($adminTu);
         $this->assertTrue(ContactInquiryResource::canViewAny());
-        $this->assertTrue(ContactInquiryResource::canEdit(new ContactInquiry()));
+        $this->assertTrue(ContactInquiryResource::canEdit(new ContactInquiry));
         $this->assertTrue(SchoolVisitResource::canViewAny());
-        $this->assertTrue(SchoolVisitResource::canEdit(new SchoolVisit()));
+        $this->assertTrue(SchoolVisitResource::canEdit(new SchoolVisit));
 
         // Guru Humas memiliki akses baca/disposisi tiket pesan, tapi tidak ke reservasi kunjungan
         Auth::login($guruHumas);

@@ -8,6 +8,7 @@ use App\Models\PpdbRegistration;
 use App\Models\Student;
 use App\Models\User;
 use App\Services\PpdbEnrollmentService;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class Phase5And6IntegrationTest extends TestCase
@@ -38,7 +39,7 @@ class Phase5And6IntegrationTest extends TestCase
         // Test detail artikel berita
         $news = NewsArticle::first();
         if ($news) {
-            $detailResponse = $this->get('/berita/' . $news->slug);
+            $detailResponse = $this->get('/berita/'.$news->slug);
             $detailResponse->assertStatus(200);
             $detailResponse->assertSee($news->title);
         }
@@ -52,7 +53,7 @@ class Phase5And6IntegrationTest extends TestCase
         $period = PpdbPeriod::first();
         $this->assertNotNull($period, 'PPDB Period must exist');
 
-        $childNik = '320199' . rand(1000000000, 9999999999);
+        $childNik = '320199'.rand(1000000000, 9999999999);
         $payload = [
             'period_id' => $period->id,
             'child_full_name' => 'Ahmad Fathir Al-Ghifari',
@@ -115,11 +116,11 @@ class Phase5And6IntegrationTest extends TestCase
     public function test_ppdb_enrollment_service_can_reject_registration(): void
     {
         $period = PpdbPeriod::first();
-        $childNik = '320188' . rand(1000000000, 9999999999);
+        $childNik = '320188'.rand(1000000000, 9999999999);
 
         $registration = PpdbRegistration::create([
             'period_id' => $period->id,
-            'registration_number' => 'PPDB-SD-REJECT-' . \Illuminate\Support\Str::random(8),
+            'registration_number' => 'PPDB-SD-REJECT-'.Str::random(8),
             'track' => 'zonasi',
             'child_full_name' => 'Calon Siswa Uji Tolak',
             'child_nik' => (string) $childNik,
