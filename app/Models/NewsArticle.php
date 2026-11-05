@@ -57,6 +57,11 @@ class NewsArticle extends Model
         return $this->belongsTo(MediaAsset::class, 'cover_asset_id');
     }
 
+    public function mediaAsset(): BelongsTo
+    {
+        return $this->belongsTo(MediaAsset::class, 'cover_asset_id');
+    }
+
     public function author(): BelongsTo
     {
         return $this->belongsTo(User::class, 'author_user_id');

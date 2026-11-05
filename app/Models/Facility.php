@@ -43,6 +43,11 @@ class Facility extends Model
         return $this->belongsTo(MediaAsset::class, 'cover_asset_id');
     }
 
+    public function mediaAsset(): BelongsTo
+    {
+        return $this->belongsTo(MediaAsset::class, 'cover_asset_id');
+    }
+
     public function getConditionLabelAttribute(): string
     {
         return match ($this->condition_status) {

@@ -65,6 +65,11 @@ class Achievement extends Model
         return $this->belongsTo(MediaAsset::class, 'photo_asset_id');
     }
 
+    public function mediaAsset(): BelongsTo
+    {
+        return $this->belongsTo(MediaAsset::class, 'photo_asset_id');
+    }
+
     public function recipients(): BelongsToMany
     {
         return $this->belongsToMany(Student::class, 'rel_achievement_recipients', 'achievement_id', 'student_id');
