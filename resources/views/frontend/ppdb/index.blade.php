@@ -230,6 +230,13 @@
         <form action="{{ route('ppdb.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
           @csrf
           <input type="hidden" name="period_id" value="{{ $activePeriod->id }}" />
+          <input type="hidden" name="form_rendered_at" value="{{ $formRenderedAt ?? \Illuminate\Support\Facades\Crypt::encryptString((string) now()->timestamp) }}" />
+
+          {{-- Field Jebakan Anti-Bot (Honeypot) --}}
+          <div aria-hidden="true" style="position: absolute; left: -9999px; top: -9999px; width: 1px; height: 1px; overflow: hidden; opacity: 0; pointer-events: none;">
+            <label for="website_url">Jangan isi kolom ini</label>
+            <input type="text" id="website_url" name="website_url" value="" tabindex="-1" autocomplete="off" />
+          </div>
 
           <!-- Bagian 1: Data Calon Siswa -->
           <div class="space-y-4">
@@ -243,14 +250,20 @@
                 <label class="block text-xs font-bold text-on-surface mb-1">
                   Nama Lengkap Anak (Sesuai Akta) <span class="text-red-500">*</span>
                 </label>
-                <input type="text" name="child_full_name" value="{{ old('child_full_name') }}" required placeholder="Contoh: Muhammad Rizki Pratama" class="w-full px-3.5 py-2.5 rounded-xl border border-surface-container-high bg-surface focus:bg-surface-container-lowest focus:border-primary outline-none text-sm transition-all" />
+                <input type="text" name="child_full_name" value="{{ old('child_full_name') }}" required placeholder="Contoh: Muhammad Rizki Pratama" class="w-full px-3.5 py-2.5 rounded-xl border {{ $errors->has('child_full_name') ? 'border-red-400 bg-red-50/40' : 'border-surface-container-high bg-surface' }} focus:bg-surface-container-lowest focus:border-primary outline-none text-sm transition-all" />
+                @error('child_full_name')
+                  <span class="text-[11px] text-red-600 font-semibold mt-1 block">{{ $message }}</span>
+                @enderror
               </div>
 
               <div>
                 <label class="block text-xs font-bold text-on-surface mb-1">
                   NIK Anak (16 Digit di KK) <span class="text-red-500">*</span>
                 </label>
-                <input type="text" name="child_nik" value="{{ old('child_nik') }}" required maxlength="16" placeholder="16 Digit NIK Anak" class="w-full px-3.5 py-2.5 rounded-xl border border-surface-container-high bg-surface focus:bg-surface-container-lowest focus:border-primary outline-none text-sm transition-all" />
+                <input type="text" name="child_nik" value="{{ old('child_nik') }}" required maxlength="16" inputmode="numeric" pattern="[0-9]{16}" placeholder="16 Digit Angka NIK Anak" class="w-full px-3.5 py-2.5 rounded-xl border {{ $errors->has('child_nik') ? 'border-red-400 bg-red-50/40' : 'border-surface-container-high bg-surface' }} focus:bg-surface-container-lowest focus:border-primary outline-none text-sm transition-all" />
+                @error('child_nik')
+                  <span class="text-[11px] text-red-600 font-semibold mt-1 block">{{ $message }}</span>
+                @enderror
               </div>
             </div>
 
@@ -276,7 +289,10 @@
                 <label class="block text-xs font-bold text-on-surface mb-1">
                   Tanggal Lahir Anak <span class="text-red-500">*</span>
                 </label>
-                <input type="date" name="child_birth_date" value="{{ old('child_birth_date') }}" required class="w-full px-3.5 py-2.5 rounded-xl border border-surface-container-high bg-surface focus:bg-surface-container-lowest focus:border-primary outline-none text-sm transition-all" />
+                <input type="date" name="child_birth_date" value="{{ old('child_birth_date') }}" required class="w-full px-3.5 py-2.5 rounded-xl border {{ $errors->has('child_birth_date') ? 'border-red-400 bg-red-50/40' : 'border-surface-container-high bg-surface' }} focus:bg-surface-container-lowest focus:border-primary outline-none text-sm transition-all" />
+                @error('child_birth_date')
+                  <span class="text-[11px] text-red-600 font-semibold mt-1 block">{{ $message }}</span>
+                @enderror
               </div>
             </div>
 
@@ -305,14 +321,20 @@
                 <label class="block text-xs font-bold text-on-surface mb-1">
                   Nama Ayah / Ibu / Wali <span class="text-red-500">*</span>
                 </label>
-                <input type="text" name="parent_name" value="{{ old('parent_name') }}" required placeholder="Contoh: Bpk. Supriyadi" class="w-full px-3.5 py-2.5 rounded-xl border border-surface-container-high bg-surface focus:bg-surface-container-lowest focus:border-primary outline-none text-sm transition-all" />
+                <input type="text" name="parent_name" value="{{ old('parent_name') }}" required placeholder="Contoh: Bpk. Supriyadi" class="w-full px-3.5 py-2.5 rounded-xl border {{ $errors->has('parent_name') ? 'border-red-400 bg-red-50/40' : 'border-surface-container-high bg-surface' }} focus:bg-surface-container-lowest focus:border-primary outline-none text-sm transition-all" />
+                @error('parent_name')
+                  <span class="text-[11px] text-red-600 font-semibold mt-1 block">{{ $message }}</span>
+                @enderror
               </div>
 
               <div>
                 <label class="block text-xs font-bold text-on-surface mb-1">
                   Nomor WhatsApp Aktif <span class="text-red-500">*</span>
                 </label>
-                <input type="tel" name="parent_phone" value="{{ old('parent_phone') }}" required placeholder="08xxxxxxxxxx" class="w-full px-3.5 py-2.5 rounded-xl border border-surface-container-high bg-surface focus:bg-surface-container-lowest focus:border-primary outline-none text-sm transition-all" />
+                <input type="tel" name="parent_phone" value="{{ old('parent_phone') }}" required placeholder="08xxxxxxxxxx" class="w-full px-3.5 py-2.5 rounded-xl border {{ $errors->has('parent_phone') ? 'border-red-400 bg-red-50/40' : 'border-surface-container-high bg-surface' }} focus:bg-surface-container-lowest focus:border-primary outline-none text-sm transition-all" />
+                @error('parent_phone')
+                  <span class="text-[11px] text-red-600 font-semibold mt-1 block">{{ $message }}</span>
+                @enderror
               </div>
             </div>
 
@@ -321,7 +343,7 @@
                 <label class="block text-xs font-bold text-on-surface mb-1">
                   NIK Orang Tua / Wali
                 </label>
-                <input type="text" name="parent_nik" value="{{ old('parent_nik') }}" maxlength="16" placeholder="16 Digit NIK Wali" class="w-full px-3.5 py-2.5 rounded-xl border border-surface-container-high bg-surface focus:bg-surface-container-lowest focus:border-primary outline-none text-sm transition-all" />
+                <input type="text" name="parent_nik" value="{{ old('parent_nik') }}" maxlength="16" inputmode="numeric" placeholder="16 Digit NIK Wali" class="w-full px-3.5 py-2.5 rounded-xl border border-surface-container-high bg-surface focus:bg-surface-container-lowest focus:border-primary outline-none text-sm transition-all" />
               </div>
 
               <div>
@@ -335,7 +357,7 @@
                 <label class="block text-xs font-bold text-on-surface mb-1">
                   Perkiraan Jarak ke Sekolah (Meter)
                 </label>
-                <input type="number" name="distance_meters" value="{{ old('distance_meters') }}" placeholder="Contoh: 450" class="w-full px-3.5 py-2.5 rounded-xl border border-surface-container-high bg-surface focus:bg-surface-container-lowest focus:border-primary outline-none text-sm transition-all" />
+                <input type="number" name="distance_meters" value="{{ old('distance_meters') }}" min="0" max="50000" placeholder="Contoh: 450" class="w-full px-3.5 py-2.5 rounded-xl border border-surface-container-high bg-surface focus:bg-surface-container-lowest focus:border-primary outline-none text-sm transition-all" />
               </div>
             </div>
 
@@ -343,7 +365,10 @@
               <label class="block text-xs font-bold text-on-surface mb-1">
                 Alamat Domisili Tempat Tinggal <span class="text-red-500">*</span>
               </label>
-              <textarea name="home_address" required rows="2" placeholder="Nama kampung, RT/RW, Desa Cikereteg, Kec. Caringin, Kab. Bogor" class="w-full p-3 rounded-xl border border-surface-container-high bg-surface focus:bg-surface-container-lowest focus:border-primary outline-none text-sm transition-all">{{ old('home_address') }}</textarea>
+              <textarea name="home_address" required rows="2" placeholder="Nama kampung, RT/RW, Desa Cikereteg, Kec. Caringin, Kab. Bogor" class="w-full p-3 rounded-xl border {{ $errors->has('home_address') ? 'border-red-400 bg-red-50/40' : 'border-surface-container-high bg-surface' }} focus:bg-surface-container-lowest focus:border-primary outline-none text-sm transition-all">{{ old('home_address') }}</textarea>
+              @error('home_address')
+                <span class="text-[11px] text-red-600 font-semibold mt-1 block">{{ $message }}</span>
+              @enderror
             </div>
           </div>
 
@@ -360,7 +385,7 @@
                   1. Foto/Scan Kartu Keluarga (KK)
                 </label>
                 <input type="file" name="document_kk" accept="image/*,application/pdf" class="w-full text-xs text-on-surface-variant file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-primary file:text-white hover:file:bg-primary-container" />
-                <span class="text-[10px] text-outline block">Maks. 3 MB (JPG, PNG, PDF)</span>
+                <span class="text-[10px] text-outline block">Maks. 3 MB (JPG, PNG, WEBP, PDF)</span>
               </div>
 
               <div class="p-4 rounded-2xl bg-surface-container-low border border-surface-container space-y-2">
@@ -368,7 +393,7 @@
                   2. Foto/Scan Akta Kelahiran
                 </label>
                 <input type="file" name="document_akta" accept="image/*,application/pdf" class="w-full text-xs text-on-surface-variant file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-primary file:text-white hover:file:bg-primary-container" />
-                <span class="text-[10px] text-outline block">Maks. 3 MB (JPG, PNG, PDF)</span>
+                <span class="text-[10px] text-outline block">Maks. 3 MB (JPG, PNG, WEBP, PDF)</span>
               </div>
 
               <div class="p-4 rounded-2xl bg-surface-container-low border border-surface-container space-y-2">
@@ -379,6 +404,29 @@
                 <span class="text-[10px] text-outline block">Kartu Identitas Anak / KIP / Mutasi</span>
               </div>
             </div>
+          </div>
+
+          <!-- Bagian 4: Verifikasi Keamanan Anti-Spam -->
+          <div class="p-4 sm:p-5 rounded-2xl bg-primary/5 border border-primary/20 space-y-2">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div class="flex items-start gap-2.5">
+                <span class="material-symbols-outlined text-primary text-[22px] mt-0.5">verified_user</span>
+                <div>
+                  <label for="security_answer" class="block text-xs font-bold text-primary">
+                    Verifikasi Keamanan: {{ $mathQuestion ?? 'Berapa hasil dari 4 + 3?' }} <span class="text-red-500">*</span>
+                  </label>
+                  <span class="text-[11px] text-on-surface-variant block">
+                    Jawab pertanyaan berhitung singkat ini untuk mencegah pengiriman spam otomatis.
+                  </span>
+                </div>
+              </div>
+              <div class="w-full sm:w-44 shrink-0">
+                <input type="number" id="security_answer" name="security_answer" required placeholder="Ketik angka..." class="w-full px-3.5 py-2.5 rounded-xl border {{ $errors->has('security_answer') ? 'border-red-400 bg-red-50' : 'border-primary/30 bg-surface-container-lowest' }} focus:border-primary outline-none text-sm font-bold text-primary text-center transition-all" />
+              </div>
+            </div>
+            @error('security_answer')
+              <span class="text-[11px] text-red-600 font-semibold block">{{ $message }}</span>
+            @enderror
           </div>
 
           <div class="pt-4 border-t border-surface-container">

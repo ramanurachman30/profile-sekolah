@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Frontend\StorePpdbRegistrationRequest;
 use App\Models\PpdbPeriod;
 use App\Models\PpdbRegistration;
 use App\Models\SchoolProfile;
@@ -10,7 +11,7 @@ use App\Services\MediaAssetService;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\View\View;
 
 class PpdbController extends Controller
@@ -23,34 +24,28 @@ class PpdbController extends Controller
 
         $profile = SchoolProfile::first();
 
-        return view('frontend.ppdb.index', compact('activePeriod', 'profile'));
+        $numA = random_int(2, 9);
+        $numB = random_int(1, 8);
+        session(['ppdb_math_answer' => $numA + $numB]);
+
+        $mathQuestion = "Berapa hasil dari {$numA} + {$numB}?";
+        $formRenderedAt = Crypt::encryptString((string) now()->timestamp);
+
+        return view('frontend.ppdb.index', compact(
+            'activePeriod',
+            'profile',
+            'mathQuestion',
+            'formRenderedAt'
+        ));
     }
 
-    public function store(Request $request, MediaAssetService $mediaService): JsonResponse|RedirectResponse
+    public function store(StorePpdbRegistrationRequest $request, MediaAssetService $mediaService): JsonResponse|RedirectResponse
     {
-        $validated = $request->validate([
-            'period_id' => 'required|exists:trn_ppdb_periods,id',
-            'child_full_name' => 'required|string|max:100',
-            'child_nik' => 'required|string|size:16',
-            'child_gender' => 'required|in:L,P',
-            'child_birth_place' => 'required|string|max:50',
-            'child_birth_date' => 'required|date',
-            'track' => 'required|in:zonasi,afirmasi,perpindahan_ortu,reguler',
-            'parent_name' => 'required|string|max:100',
-            'parent_nik' => 'nullable|string|max:16',
-            'parent_phone' => 'required|string|max:20',
-            'parent_email' => 'nullable|email|max:80',
-            'parent_occupation' => 'nullable|string|max:50',
-            'home_address' => 'required|string|max:255',
-            'distance_meters' => 'nullable|integer',
-            'document_kk' => 'nullable|file|mimes:jpeg,png,jpg,pdf,webp|max:3072',
-            'document_akta' => 'nullable|file|mimes:jpeg,png,jpg,pdf,webp|max:3072',
-            'document_kia' => 'nullable|file|mimes:jpeg,png,jpg,pdf,webp|max:3072',
-        ]);
+        $validated = $request->validated();
 
         // Hitung umur anak per 1 Juli tahun berjalan
         $birthDate = Carbon::parse($validated['child_birth_date']);
-        $referenceDate = Carbon::create(date('Y'), 7, 1);
+        $referenceDate = Carbon::create((int) date('Y'), 7, 1);
         $diff = $birthDate->diff($referenceDate);
         $childAgeYears = $diff->y;
         $childAgeMonths = $diff->m;
