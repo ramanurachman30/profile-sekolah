@@ -45,10 +45,16 @@ Route::get('/galeri', [GalleryController::class, 'index'])->name('gallery');
 
 // PPDB SD Online Terpadu
 Route::get('/ppdb', [PpdbController::class, 'index'])->name('ppdb.index');
-Route::post('/ppdb/daftar', [PpdbController::class, 'store'])->name('ppdb.store');
+Route::post('/ppdb/daftar', [PpdbController::class, 'store'])
+    ->middleware('throttle:ppdb-submission')
+    ->name('ppdb.store');
 Route::get('/ppdb/sukses/{registrationNumber}', [PpdbController::class, 'success'])->name('ppdb.success');
 
 // Kontak, Layanan Pesan & Reservasi Kunjungan
 Route::get('/kontak', [ContactController::class, 'index'])->name('contact.index');
-Route::post('/kontak/pesan', [ContactController::class, 'storeInquiry'])->name('contact.inquiry.store');
-Route::post('/kontak/kunjungan', [ContactController::class, 'storeVisit'])->name('contact.visit.store');
+Route::post('/kontak/pesan', [ContactController::class, 'storeInquiry'])
+    ->middleware('throttle:public-form')
+    ->name('contact.inquiry.store');
+Route::post('/kontak/kunjungan', [ContactController::class, 'storeVisit'])
+    ->middleware('throttle:public-form')
+    ->name('contact.visit.store');
