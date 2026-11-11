@@ -38,6 +38,10 @@ class SchoolProfile extends Model
         'social_youtube',
         'maps_embed_url',
         'operating_hours',
+        'meta_title',
+        'meta_description',
+        'meta_keywords',
+        'og_image_asset_id',
         'vision',
         'mission',
         'history_summary',
@@ -52,5 +56,10 @@ class SchoolProfile extends Model
     public function headmasterPhoto(): BelongsTo
     {
         return $this->belongsTo(MediaAsset::class, 'headmaster_photo_asset_id');
+    }
+
+    public function ogImage(): BelongsTo
+    {
+        return $this->belongsTo(MediaAsset::class, 'og_image_asset_id');
     }
 }

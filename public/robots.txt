@@ -1,2 +1,9 @@
 User-agent: *
-Disallow:
+Allow: /
+Disallow: /admin
+Disallow: /admin/
+Disallow: /ppdb/sukses/
+Disallow: /ppdb/daftar
+
+Sitemap: /sitemap.xml
+

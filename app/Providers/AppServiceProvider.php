@@ -2,11 +2,15 @@
 
 namespace App\Providers;
 
+use App\Models\SchoolProfile;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\View\View as ViewInstance;
 use Symfony\Component\HttpFoundation\Response;
 
 class AppServiceProvider extends ServiceProvider
@@ -25,6 +29,22 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureRateLimiting();
+        $this->configureSeoViewComposer();
+    }
+
+    /**
+     * Bagikan konfigurasi SEO profil sekolah ke layout frontend publik.
+     */
+    protected function configureSeoViewComposer(): void
+    {
+        View::composer('layouts.frontend', function (ViewInstance $view): void {
+            if (! Schema::hasTable('mst_school_profile')) {
+                return;
+            }
+
+            $seoProfile = SchoolProfile::with(['logo', 'ogImage'])->first();
+            $view->with('seoProfile', $seoProfile);
+        });
     }
 
     /**

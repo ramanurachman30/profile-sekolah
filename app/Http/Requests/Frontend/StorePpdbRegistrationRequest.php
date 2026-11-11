@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Frontend;
 
+use App\Services\MediaAssetService;
 use Carbon\Carbon;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Contracts\Validation\Validator;
@@ -211,6 +212,29 @@ class StorePpdbRegistrationRequest extends FormRequest
                         'Jawaban verifikasi keamanan (berhitung) belum tepat. Silakan jawab sesuai pertanyaan yang tampil.'
                     );
                 }
+
+                // 4. Pemeriksaan Magic Bytes (%PDF-) untuk Dokumen PDF
+                $mediaService = app(MediaAssetService::class);
+                foreach (['document_kk', 'document_akta', 'document_kia'] as $docField) {
+                    if ($this->hasFile($docField)) {
+                        $uploadedFile = $this->file($docField);
+                        $mime = strtolower((string) $uploadedFile->getMimeType());
+                        $clientExt = strtolower((string) $uploadedFile->getClientOriginalExtension());
+
+                        if (($mime === 'application/pdf' || $clientExt === 'pdf') && ! $mediaService->hasValidPdfMagicBytes($uploadedFile)) {
+                            Log::warning('PPDB Security Alert: Invalid PDF magic bytes detected', [
+                                'field' => $docField,
+                                'ip' => $this->ip(),
+                                'user_agent' => $this->userAgent(),
+                            ]);
+
+                            $validator->errors()->add(
+                                $docField,
+                                'Berkas PDF tidak valid atau terdeteksi telah dimanipulasi (header bukan %PDF-).'
+                            );
+                        }
+                    }
+                }
             },
         ];
     }
@@ -254,4 +278,3 @@ class StorePpdbRegistrationRequest extends FormRequest
         ];
     }
 }
-

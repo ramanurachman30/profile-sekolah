@@ -64,6 +64,23 @@ class NewsArticleInfolist
                             ->html()
                             ->columnSpanFull(),
                     ]),
+
+                Section::make('Metadata SEO & Mesin Pencari')
+                    ->columns(2)
+                    ->schema([
+                        TextEntry::make('meta_title')
+                            ->label('Meta Title')
+                            ->placeholder('Otomatis dari Judul Berita'),
+
+                        TextEntry::make('meta_keywords')
+                            ->label('Meta Keywords')
+                            ->placeholder('-'),
+
+                        TextEntry::make('meta_description')
+                            ->label('Meta Description')
+                            ->placeholder('Otomatis dari Ringkasan Berita')
+                            ->columnSpanFull(),
+                    ]),
             ]);
     }
 }

@@ -9,6 +9,7 @@ use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\NewsController;
 use App\Http\Controllers\Frontend\PpdbController;
 use App\Http\Controllers\Frontend\ProfileController;
+use App\Http\Controllers\Frontend\SeoController;
 use App\Http\Controllers\Frontend\StudentAffairController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,6 +18,10 @@ use Illuminate\Support\Facades\Route;
 | Web Routes - Portal Publik SDN Cikereteg 01
 |--------------------------------------------------------------------------
 */
+
+// SEO & Indeks Mesin Pencari
+Route::get('/sitemap.xml', [SeoController::class, 'sitemap'])->name('seo.sitemap');
+Route::get('/robots.txt', [SeoController::class, 'robots'])->name('seo.robots');
 
 // Beranda
 Route::get('/', [HomeController::class, 'index'])->name('home');

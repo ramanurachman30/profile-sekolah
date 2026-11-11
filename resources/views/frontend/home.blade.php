@@ -1,7 +1,10 @@
 @extends('layouts.frontend')
 
-@section('title', ($profile->school_name ?? 'SDN Cikereteg 01') . ' - Cerdas, Berakhlak Mulia & Berkarakter | Kurikulum Merdeka SD')
-@section('meta_description', 'Website resmi ' . ($profile->school_name ?? 'SDN Cikereteg 01') . ', ' . ($profile->sub_district ?? 'Kec. Caringin') . ', ' . ($profile->district ?? 'Kab. Bogor') . '. Sekolah Dasar Negeri ramah anak dengan Kurikulum Merdeka, pembiasaan karakter luhur 5S, dan lingkungan belajar asri.')
+@section('title', $profile->meta_title ?: (($profile->school_name ?? 'SDN Cikereteg 01') . ' - Cerdas, Berakhlak Mulia & Berkarakter | Kurikulum Merdeka SD'))
+@section('meta_description', $profile->meta_description ?: ('Website resmi ' . ($profile->school_name ?? 'SDN Cikereteg 01') . ', ' . ($profile->sub_district ?? 'Kec. Caringin') . ', ' . ($profile->district ?? 'Kab. Bogor') . '. Sekolah Dasar Negeri ramah anak dengan Kurikulum Merdeka, pembiasaan karakter luhur 5S, dan lingkungan belajar asri.'))
+@if(!empty($profile->meta_keywords))
+@section('meta_keywords', $profile->meta_keywords)
+@endif
 
 @section('content')
 

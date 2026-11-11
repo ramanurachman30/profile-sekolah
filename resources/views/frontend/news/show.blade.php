@@ -1,7 +1,81 @@
 @extends('layouts.frontend')
 
-@section('title', $article->title . ' - SDN Cikereteg 01')
-@section('meta_description', Str::limit($article->summary, 160))
+@section('title', ($article->meta_title ?: $article->title) . ' - SDN Cikereteg 01')
+@section('meta_description', $article->meta_description ?: Str::limit(strip_tags($article->summary), 160))
+@if(!empty($article->meta_keywords))
+@section('meta_keywords', $article->meta_keywords)
+@endif
+@section('og_type', 'article')
+@if($article->cover?->url)
+@section('og_image', $article->cover->url)
+@endif
+
+@push('seo_meta')
+  @if($article->published_at)
+    <meta property="article:published_time" content="{{ $article->published_at->toIso8601String() }}" />
+  @endif
+  <meta property="article:author" content="{{ $article->author_name ?? $article->author?->full_name ?? 'Humas SDN Cikereteg 01' }}" />
+  @if($article->category)
+    <meta property="article:section" content="{{ $article->category->name }}" />
+  @endif
+@endpush
+
+@push('json_ld')
+  @php
+    $articleSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'NewsArticle',
+        'headline' => $article->meta_title ?: $article->title,
+        'description' => $article->meta_description ?: Str::limit(strip_tags($article->summary), 160),
+        'image' => array_values(array_filter([$article->cover?->url ?? asset('frontend/images/logo-sdn-cikereteg-01.png')])),
+        'datePublished' => ($article->published_at ?? $article->created_at ?? now())->toIso8601String(),
+        'dateModified' => ($article->published_at ?? $article->created_at ?? now())->toIso8601String(),
+        'author' => [
+            '@type' => 'Person',
+            'name' => $article->author_name ?? $article->author?->full_name ?? 'Humas SDN Cikereteg 01',
+        ],
+        'publisher' => [
+            '@type' => 'Organization',
+            'name' => 'SDN Cikereteg 01',
+            'logo' => [
+                '@type' => 'ImageObject',
+                'url' => asset('frontend/images/logo-sdn-cikereteg-01.png'),
+            ],
+        ],
+        'mainEntityOfPage' => [
+            '@type' => 'WebPage',
+            '@id' => route('news.show', $article->slug),
+        ],
+    ];
+
+    $breadcrumbSchema = [
+        '@context' => 'https://schema.org',
+        '@type' => 'BreadcrumbList',
+        'itemListElement' => [
+            [
+                '@type' => 'ListItem',
+                'position' => 1,
+                'name' => 'Beranda',
+                'item' => route('home'),
+            ],
+            [
+                '@type' => 'ListItem',
+                'position' => 2,
+                'name' => 'Berita',
+                'item' => route('news.index'),
+            ],
+            [
+                '@type' => 'ListItem',
+                'position' => 3,
+                'name' => $article->title,
+                'item' => route('news.show', $article->slug),
+            ],
+        ],
+    ];
+  @endphp
+  <script type="application/ld+json">{!! json_encode($articleSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
+  <script type="application/ld+json">{!! json_encode($breadcrumbSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
+@endpush
 
 @section('content')
 <!-- BREADCRUMB -->

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\SchoolProfiles\Schemas;
 
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Tabs;
@@ -139,6 +140,39 @@ class SchoolProfileForm
                                     ->label('Jam Operasional Pelayanan')
                                     ->required()
                                     ->placeholder('Contoh: Senin - Jumat: 07.00 - 14.30 WIB'),
+                            ]),
+
+                        Tab::make('SEO & Mesin Pencari')
+                            ->icon('heroicon-o-magnifying-glass-circle')
+                            ->columns(2)
+                            ->schema([
+                                TextInput::make('meta_title')
+                                    ->label('Judul Meta Global (Default SEO Title)')
+                                    ->maxLength(160)
+                                    ->columnSpanFull()
+                                    ->placeholder('SDN Cikereteg 01 - Cerdas, Berakhlak Mulia & Berkarakter | Kurikulum Merdeka SD')
+                                    ->helperText('Judul utama yang tampil di tab browser dan hasil pencarian Google (ideal: 50–60 karakter).'),
+
+                                Textarea::make('meta_description')
+                                    ->label('Deskripsi Meta Global (Default Meta Description)')
+                                    ->rows(3)
+                                    ->maxLength(255)
+                                    ->columnSpanFull()
+                                    ->placeholder('Website resmi SDN Cikereteg 01, Kec. Caringin, Kab. Bogor...')
+                                    ->helperText('Cuplikan ringkas di bawah judul pada hasil pencarian Google dan pratinjau WhatsApp (ideal: 150–160 karakter).'),
+
+                                TextInput::make('meta_keywords')
+                                    ->label('Kata Kunci Pencarian (Meta Keywords)')
+                                    ->maxLength(255)
+                                    ->placeholder('SDN Cikereteg 01, SD Negeri Caringin Bogor, PPDB SD Bogor')
+                                    ->helperText('Pisahkan setiap kata kunci dengan tanda koma (,).'),
+
+                                Select::make('og_image_asset_id')
+                                    ->label('Gambar Pratinjau Sosial Media (Open Graph Image)')
+                                    ->relationship('ogImage', 'file_name')
+                                    ->searchable()
+                                    ->preload()
+                                    ->placeholder('Pilih gambar thumbnail default saat link dibagikan ke WhatsApp/FB'),
                             ]),
                     ]),
             ]);

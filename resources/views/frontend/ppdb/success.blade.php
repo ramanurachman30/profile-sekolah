@@ -1,6 +1,7 @@
 @extends('layouts.frontend')
 
 @section('title', 'Pendaftaran PPDB Berhasil - ' . $registration->registration_number)
+@section('meta_robots', 'noindex, nofollow')
 
 @section('content')
 <!-- BREADCRUMB -->

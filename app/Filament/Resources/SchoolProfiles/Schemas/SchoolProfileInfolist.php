@@ -47,6 +47,18 @@ class SchoolProfileInfolist
                     ->placeholder('-')
                     ->columnSpanFull(),
                 TextEntry::make('operating_hours'),
+                TextEntry::make('meta_title')
+                    ->label('Judul Meta SEO')
+                    ->placeholder('-')
+                    ->columnSpanFull(),
+                TextEntry::make('meta_description')
+                    ->label('Deskripsi Meta SEO')
+                    ->placeholder('-')
+                    ->columnSpanFull(),
+                TextEntry::make('meta_keywords')
+                    ->label('Kata Kunci SEO')
+                    ->placeholder('-')
+                    ->columnSpanFull(),
                 TextEntry::make('vision')
                     ->columnSpanFull(),
                 TextEntry::make('mission')

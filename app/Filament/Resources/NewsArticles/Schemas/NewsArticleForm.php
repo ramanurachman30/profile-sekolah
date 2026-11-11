@@ -101,6 +101,29 @@ class NewsArticleForm
                             ->default(now())
                             ->required(),
                     ]),
+
+                Section::make('Optimasi Mesin Pencari (SEO & Open Graph)')
+                    ->description('Konfigurasi opsional untuk memperkaya tampilan artikel di Google Search dan pratinjau WhatsApp/Facebook.')
+                    ->collapsed()
+                    ->columns(2)
+                    ->schema([
+                        TextInput::make('meta_title')
+                            ->label('Judul SEO Kustom (Meta Title)')
+                            ->maxLength(160)
+                            ->placeholder('Kosongkan untuk otomatis menggunakan Judul Berita'),
+
+                        TextInput::make('meta_keywords')
+                            ->label('Kata Kunci Artikel (Meta Keywords)')
+                            ->maxLength(255)
+                            ->placeholder('Contoh: prestasi siswa, kurikulum merdeka, sdn cikereteg 01'),
+
+                        Textarea::make('meta_description')
+                            ->label('Deskripsi SEO Kustom (Meta Description)')
+                            ->rows(2)
+                            ->maxLength(255)
+                            ->columnSpanFull()
+                            ->placeholder('Kosongkan untuk otomatis menggunakan Ringkasan Berita (maksimal 160 karakter disarankan).'),
+                    ]),
             ]);
     }
 }
